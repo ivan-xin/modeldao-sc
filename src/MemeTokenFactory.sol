@@ -34,7 +34,6 @@ contract MemeTokenFactory is Initializable, UUPSUpgradeable, OwnableUpgradeable 
         string memory _name,
         string memory _symbol,
         uint256 _initialSupply,
-        uint256 _reserveRatio,
         uint256 _creatorFeePercent,
         address _creator
     ) external returns (address) {
@@ -44,7 +43,6 @@ contract MemeTokenFactory is Initializable, UUPSUpgradeable, OwnableUpgradeable 
             _name,
             _symbol,
             _initialSupply,
-            _reserveRatio,
             _creatorFeePercent,
             platformFeePercent,
             _creator,

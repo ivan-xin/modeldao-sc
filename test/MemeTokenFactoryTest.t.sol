@@ -44,7 +44,6 @@ contract MemeTokenFactoryTest is Test {
             "New Meme", 
             "NMEME", 
             1000 * 10**18, // 初始供应量
-            800000000000000000, // 储备比率 (80%)
             20, // 创建者费用 2%
             user // 创建者地址
         );
@@ -101,7 +100,6 @@ contract MemeTokenFactoryTest is Test {
             "Fee Test", 
             "FEE", 
             initialSupply,
-            reserveRatio,
             creatorFeePercent,
             user
         );

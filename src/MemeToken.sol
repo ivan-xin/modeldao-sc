@@ -6,8 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./BondingCurve.sol";
 
 contract MemeToken is ERC20, Ownable, BondingCurve {
-    // 储备金
-    uint256 public reserveBalance;
+    // // 储备金
+    uint256 public  reserveBalance;
     
     // 费用设置
     uint256 public creatorFeePercent;
@@ -22,12 +22,11 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         string memory _name,
         string memory _symbol,
         uint256 _initialSupply,
-        uint256 _reserveRatio,
         uint256 _creatorFeePercent,
         uint256 _platformFeePercent,
         address _creator,
         address _platformAddress
-    ) ERC20(_name, _symbol) Ownable(_creator) BondingCurve(_reserveRatio) {
+    ) ERC20(_name, _symbol) Ownable(_creator) {
         require(_creatorFeePercent <= 100, "Creator fee too high"); // 最高10%
         
         creatorFeePercent = _creatorFeePercent;
@@ -40,7 +39,7 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         }
 
         // 初始化储备金，避免除以零错误
-        reserveBalance = 1 ether; // 设置一个初始储备金
+        reserveBalance = 0.01 ether; // 设置初始储备金为0.01 ETH
     }
     
     // 购买代币
@@ -59,8 +58,6 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         // 计算获得的代币数量
         uint256 tokenAmount = calculatePurchaseReturn(
             totalSupply(),
-            reserveBalance,
-            reserveRatio,
             purchaseAmount
         );
         
@@ -92,8 +89,6 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         // 计算获得的ETH数量
         uint256 ethAmount = calculateSaleReturn(
             totalSupply(),
-            reserveBalance,
-            reserveRatio,
             _amount
         );
         
@@ -118,11 +113,8 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         require(address(this).balance >= ethAmount, "Insufficient contract balance");
         require(reserveBalance >= ethAmount, "Insufficient reserve balance");
         
-        // TODO: 这里需要考虑:
-        // 1,贮备金额度是否应该加上平台手续费和创建者手续费？？？？ 
-        // 2, 如果用户出售的代币数量大于储备金，那么应该如何处理？？？？
         // 更新储备金
-        reserveBalance -= ethAmount + platformFee + creatorFee;
+        reserveBalance -= ethAmount;
         
         // 销毁代币
         _burn(msg.sender, _amount);
@@ -153,8 +145,6 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         
         return calculatePurchaseReturn(
             totalSupply(),
-            reserveBalance,
-            reserveRatio,
             purchaseAmount
         );
     }
@@ -164,8 +154,6 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         
         uint256 ethAmount = calculateSaleReturn(
             totalSupply(),
-            reserveBalance,
-            reserveRatio,
             _tokenAmount
         );
         

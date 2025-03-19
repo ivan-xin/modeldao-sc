@@ -15,7 +15,6 @@ contract MemeTokenInterface is Initializable, UUPSUpgradeable, OwnableUpgradeabl
         string symbol;
         uint256 totalSupply;
         uint256 reserveBalance;
-        uint256 reserveRatio;
         uint256 currentPrice;
         uint256 creatorFeePercent;
         address creator;
@@ -53,11 +52,10 @@ contract MemeTokenInterface is Initializable, UUPSUpgradeable, OwnableUpgradeabl
             symbol: token.symbol(),
             totalSupply: token.totalSupply(),
             reserveBalance: token.reserveBalance(),
-            reserveRatio: token.reserveRatio(),
             // 修改：使用正确的方法名，根据 MemeToken 合约中的实际方法
             currentPrice: calculatePurchasePrice(token, 10**18), // 价格为1个代币的价格
             creatorFeePercent: token.creatorFeePercent(),
-            creator: token.owner() // 修改：使用 owner() 替代 creator()
+            creator: token.owner()
         });
     }
 

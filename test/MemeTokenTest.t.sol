@@ -42,7 +42,6 @@ contract MemeTokenTest is Test {
             "Test Meme", 
             "MEME", 
             1000 * 10**18, // 初始供应量
-            800000000000000000, // 储备比率 (80%)
             20, // 创建者费用 2%
             owner // 创建者地址
         );
@@ -62,7 +61,6 @@ contract MemeTokenTest is Test {
             "Test Meme 2", // 修改名称以区分
             "MEME2", // 修改符号以区分
             1000 * 10**18,
-            800000000000000000,
             20,
             owner
         );
