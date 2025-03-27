@@ -87,11 +87,15 @@ contract MemeToken is ERC20, Ownable, BondingCurve {
         require(balanceOf(msg.sender) >= _amount, "Insufficient balance");
         
         // 计算获得的ETH数量
-        uint256 ethAmount = calculateSaleReturn(
-            totalSupply(),
-            _amount
-        );
-        
+        // uint256 ethAmount = calculateSaleReturn(
+        //     totalSupply(),
+        //     _amount
+        // );
+        // 先扣除费用再计算可获得ETH
+        uint256 totalFeePercent = platformFeePercent + creatorFeePercent;
+        uint256 ethAmount = calculateSaleReturn(totalSupply(), _amount);
+        ethAmount = ethAmount * (1000 - totalFeePercent) / 1000;
+
         // 计算平台费用
         uint256 platformFee = ethAmount * platformFeePercent / 1000;
         
